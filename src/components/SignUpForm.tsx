@@ -3,21 +3,24 @@ import { FormEvent, useState } from "react"
 import { Link } from "react-router-dom";
 import styled from "styled-components"
 import { useAuth, UsernameOrPasswordWorngError } from "../contexts/auth-context";
-import { faCircle, faCircleXmark, faUserSecret, faX } from "@fortawesome/free-solid-svg-icons";
+import { faCircleXmark, faUserSecret, faX } from "@fortawesome/free-solid-svg-icons";
 
-export default function SignInForm() {
+export default function SignUpForm() {
 
     let [username, setUsername] = useState("");
+    let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
+    let [confirmPassword, setConfirmPassword] = useState("");
+    let [name, setName] = useState("");
     let [loginFailed, setLoginFailed] = useState(false);
 
-    const { signIn } = useAuth()
+    const { signUp } = useAuth()
 
     async function submit(event: FormEvent) {
         event.preventDefault()
 
         try {
-            await signIn(username, password)
+            await signUp(username, email, password, name)
         } catch (error) {
             if (error instanceof UsernameOrPasswordWorngError) {
                 setLoginFailed(true)
@@ -27,7 +30,7 @@ export default function SignInForm() {
 
     return (
         <Container>
-            <h2>Sign In</h2>
+            <h2>Sign Up</h2>
             {loginFailed ? (
                 <p className="error-message">
                     username or password wrong. 
@@ -35,14 +38,25 @@ export default function SignInForm() {
                         <FontAwesomeIcon icon={faCircleXmark} />
                     </a></p>)
                 : (<></>)}
-            <form onSubmit={submit}> 
+            <form  onSubmit={submit}>
                 <label htmlFor="username">username:</label>
                 <input type="text" name="username" value={username} onChange={e => setUsername(e.target.value)} />
+
+                <label htmlFor="email">email:</label>
+                <input type="text" name="email" value={email} onChange={e => setEmail(e.target.value)} />
+                
                 <label htmlFor="password">password:</label>
                 <input type="password" name="password" value={password} onChange={e => setPassword(e.target.value)} />
-                <button type="submit">Sign In</button>
+                
+                <label htmlFor="confirm-password">confirm password:</label>
+                <input type="password" name="confirm-password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
+                
+                <label htmlFor="name">name:</label>
+                <input type="text" name="name" value={name} onChange={e => setName(e.target.value)} />
+                
+                <button type="submit">Sign Up</button>
             </form>
-            <p>Not registered? <Link className="signup-link" to="/signup">Sign Up</Link></p>
+            <p>Already registered? <Link className="signin-link" to="/signin">Sign In</Link></p>
         </Container>
     )
 }
@@ -106,7 +120,7 @@ const Container = styled.div`
         border: 1px solid #1E4824;
     }
 
-    .signup-link{
+    .signin-link{
         color: #00A3E9;
     }
 `

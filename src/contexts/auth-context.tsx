@@ -7,7 +7,7 @@ export type UserData = {
 export type AuthContextData = {
     signIn(username: string, password: string): Promise<void>;
     signOut(username: string, password: string): Promise<void>;
-    signUp(username: string, password: string): Promise<void>
+    signUp(username: string, email: string, password: string, name: string): Promise<void>
     getUserData(): UserData | null;
     getToken(): string | null
 
@@ -15,7 +15,7 @@ export type AuthContextData = {
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-export const AuthProvider: React.FC<PropsWithChildren<{}>> = ({ children })=> {
+export const AuthProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     let [token, setToken] = useState<string | null>(null)
     let [userData, setUserData] = useState<UserData | null>(null)
 
@@ -28,7 +28,7 @@ export const AuthProvider: React.FC<PropsWithChildren<{}>> = ({ children })=> {
         setUserData(null)
     }
 
-    async function signUp(username: string, password: string): Promise<void> {
+    async function signUp(username: string, email: string, password: string, name: string): Promise<void> {
     }
 
     function getUserData(): UserData | null {
@@ -52,8 +52,32 @@ export function useAuth() {
 }
 
 
-export class UsernameOrPasswordWorngError extends Error{
+export class UsernameOrPasswordWorngError extends Error {
     constructor() {
         super("Username or passoword wrong.")
+    }
+}
+
+export class InvalidUsernameError extends Error {
+    constructor() {
+        super("Invalid username.")
+    }
+}
+
+export class InvalidEmailError extends Error {
+    constructor() {
+        super("Invalid email.")
+    }
+}
+
+export class InvalidPasswordError extends Error {
+    constructor() {
+        super("Invalid password.")
+    }
+}
+
+export class InvalidNameError extends Error {
+    constructor() {
+        super("Invalid name.")
     }
 }

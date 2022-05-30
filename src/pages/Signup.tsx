@@ -1,10 +1,10 @@
 import styled from 'styled-components'
-import SignInFormContainer from '../components/SignInFormContainer'
+import SignUpFormContainer from '../components/SignUpFormContainer'
 
-export default function SignIn() {
+export default function SignUp() {
     return (
         <Container>
-            <SignInFormContainer/>
+            <SignUpFormContainer/>
         </Container>
     )
 }
@@ -15,4 +15,5 @@ const Container = styled.div`
     display: flex;
     min-height: 100vh;
     min-width: 100vw;
+
 `

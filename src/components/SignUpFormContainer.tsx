@@ -1,8 +1,9 @@
 import styled from "styled-components"
-import SignInForm from "./SignInForm"
 import logo from '../assets/logo.png'
 import { Link } from "react-router-dom"
-export default function SignInFormContainer() {
+import SignUpForm from "./SignUpForm"
+
+export default function SignUpFormContainer() {
     return (
         <Container>
             <div className="logo-wrapper">
@@ -10,7 +11,7 @@ export default function SignInFormContainer() {
                     <img className="logo" src={logo} alt="message app logo" />
                 </Link>
             </div>
-            <SignInForm/>
+            <SignUpForm/>
         </Container>
     )
 }
