@@ -10,8 +10,9 @@ export default function SignIn() {
 }
 
 const Container = styled.div`
+    background-color: #F3F1F9;
+    justify-content: center;
     display: flex;
-    padding: 5px;
-    width: 100vw;
     height: 100vh;
+    width: 100vw;
 `
