@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios'
 
 export interface Api {
-    signUp(): Promise<void>
+    signUp(username: string, email: string, password: string, name: string): Promise<void>
 }
 
 export class ApiAxios implements Api{
@@ -16,12 +16,16 @@ export class ApiAxios implements Api{
         })
     }
 
-    async signUp() {
+    async signUp(username: string, email: string, password: string, name: string) {
         try {
-            let res = await this.api.get("/user")
-            console.log(res)
+            let res = await this.api.post("/signup", {
+                username,
+                email,
+                password,
+                name
+            });
         } catch (error) {
-
+            console.log(error)
         }
     }
 }

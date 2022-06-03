@@ -25,12 +25,11 @@ export const AuthProvider: React.FC<PropsWithChildren<{api: Api}>> = ({ children
     }
 
     async function signOut(username: string, password: string): Promise<void> {
-        setToken(null)
-        setUserData(null)
+        console.log("SignUp", username)
     }
 
     async function signUp(username: string, email: string, password: string, name: string): Promise<void> {
-        let res = await api.signUp()
+        let res = await api.signUp(username, email, password, name)
         console.log(res)
     }
 
