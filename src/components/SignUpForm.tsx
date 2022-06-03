@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FormEvent, useState } from "react"
 import { Link } from "react-router-dom";
 import styled from "styled-components"
-import { useAuth, UsernameOrPasswordWorngError } from "../contexts/auth-context";
+import { EmailAlreadyRegistered, InvalidEmailError, InvalidNameError, InvalidPasswordError, InvalidUsernameError, useAuth, UsernameAlreadyRegistered } from "../contexts/auth-context";
 import { faCircleXmark, faUserSecret, faX } from "@fortawesome/free-solid-svg-icons";
 
 export default function SignUpForm() {
@@ -12,7 +12,16 @@ export default function SignUpForm() {
     let [password, setPassword] = useState("");
     let [confirmPassword, setConfirmPassword] = useState("");
     let [name, setName] = useState("");
-    let [loginFailed, setLoginFailed] = useState(false);
+
+    let [invalidUsername, setInvalidUsername] = useState(false);
+    let [invalidEmail, setInvalidEmail] = useState(false);
+    let [invalidPassword, setInvalidPassword] = useState(false);
+    let [invalidName, setInvalidName] = useState(false);
+
+    let [passwordConfirmationNotMatch, setPasswordConfirmationNotMatch] = useState(false);
+
+    let [usernameAlreadyRegistered, setUsernameAlreadyRegistered] = useState(false);
+    let [emailAlreaduRegistered, setEmailAlreadyRegistered] = useState(false)
 
     const { signUp } = useAuth()
 
@@ -20,40 +29,123 @@ export default function SignUpForm() {
         event.preventDefault()
 
         try {
+            if (password != confirmPassword) {
+                setPasswordConfirmationNotMatch(true);
+                return;
+            }
             await signUp(username, email, password, name)
         } catch (error) {
-            if (error instanceof UsernameOrPasswordWorngError) {
-                setLoginFailed(true)
+            if (error instanceof InvalidUsernameError) {
+                setInvalidUsername(true)
+            } else if (error instanceof InvalidEmailError) {
+                setInvalidEmail(true)
+            } else if (error instanceof InvalidPasswordError) {
+                setInvalidPassword(true)
+            } else if (error instanceof InvalidNameError) {
+                setInvalidName(true)
+            } else if (error instanceof UsernameAlreadyRegistered) {
+                setUsernameAlreadyRegistered(true)
+            } else if (error instanceof EmailAlreadyRegistered) {
+                setEmailAlreadyRegistered(true)
             }
         }
+    }
+
+    function clearErrors() {
+        setInvalidUsername(false)
+        setInvalidEmail(false)
+        setInvalidPassword(false)
+        setInvalidName(false)
+        setPasswordConfirmationNotMatch(false)
+        setUsernameAlreadyRegistered(false)
+        setEmailAlreadyRegistered(false)
     }
 
     return (
         <Container>
             <h2>Sign Up</h2>
-            {loginFailed ? (
-                <p className="error-message">
-                    username or password wrong. 
-                    <a onClick={() => setLoginFailed(false)}>
+
+            {(invalidUsername) && (
+                <div className="error-message-container">
+                    <div className="error-messages">
+                        {
+                            invalidUsername && (
+                                <div className="error-message">
+                                    invalid username.
+                                </div>)
+                        }
+                        {
+                            invalidEmail && (
+                                <div className="error-message">
+                                    invalid email.
+                                </div>)
+                        }
+                        {
+                            invalidPassword && (
+                                <div className="error-message">
+                                    invalid password.
+                                </div>)
+                        }
+                        {
+                            invalidName && (
+                                <div className="error-message">
+                                    invalid name.
+                                </div>)
+                        }
+                        {
+                            passwordConfirmationNotMatch && (
+                                <div className="error-message">
+                                    password and confirmation not match.
+                                </div>)
+                        }
+                        {
+                            usernameAlreadyRegistered && (
+                                <div className="error-message">
+                                    username already registered.
+                                </div>)
+                        }
+                        {
+                            emailAlreaduRegistered && (
+                                <div className="error-message">
+                                    email already registered.
+                                </div>)
+                        }
+                    </div>
+                    <a onClick={() => clearErrors()}>
                         <FontAwesomeIcon icon={faCircleXmark} />
-                    </a></p>)
-                : (<></>)}
-            <form  onSubmit={submit}>
+                    </a>
+
+                </div>
+            )
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+            <form onSubmit={submit}>
                 <label htmlFor="username">username:</label>
                 <input type="text" name="username" value={username} onChange={e => setUsername(e.target.value)} />
 
                 <label htmlFor="email">email:</label>
                 <input type="text" name="email" value={email} onChange={e => setEmail(e.target.value)} />
-                
+
                 <label htmlFor="password">password:</label>
                 <input type="password" name="password" value={password} onChange={e => setPassword(e.target.value)} />
-                
+
                 <label htmlFor="confirm-password">confirm password:</label>
                 <input type="password" name="confirm-password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
-                
+
                 <label htmlFor="name">name:</label>
                 <input type="text" name="name" value={name} onChange={e => setName(e.target.value)} />
-                
+
                 <button type="submit">Sign Up</button>
             </form>
             <p>Already registered? <Link className="signin-link" to="/signin">Sign In</Link></p>
@@ -77,10 +169,15 @@ const Container = styled.div`
     }
 
 
-    .error-message {
+    .error-message-container {
+        display: flex;
         color: #F3F1F9;
         background-color: rgb(209, 55, 55);
         padding: 5px;
+    }
+
+    .error-message-container  .error-messages {
+        flex-grow: 1;
     }
 
     .error-message a {

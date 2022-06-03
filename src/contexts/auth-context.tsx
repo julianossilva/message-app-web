@@ -1,4 +1,5 @@
 import React, { createContext, PropsWithChildren, useContext, useState } from 'react'
+import { Api, ApiAxios } from '../api';
 
 export type UserData = {
     username: string
@@ -15,7 +16,7 @@ export type AuthContextData = {
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-export const AuthProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+export const AuthProvider: React.FC<PropsWithChildren<{api: Api}>> = ({ children, api }) => {
     let [token, setToken] = useState<string | null>(null)
     let [userData, setUserData] = useState<UserData | null>(null)
 
@@ -29,6 +30,8 @@ export const AuthProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
     }
 
     async function signUp(username: string, email: string, password: string, name: string): Promise<void> {
+        let res = await api.signUp()
+        console.log(res)
     }
 
     function getUserData(): UserData | null {
@@ -79,5 +82,16 @@ export class InvalidPasswordError extends Error {
 export class InvalidNameError extends Error {
     constructor() {
         super("Invalid name.")
+    }
+}
+export class UsernameAlreadyRegistered extends Error {
+    constructor() {
+        super("username already registered.")
+    }
+}
+
+export class EmailAlreadyRegistered extends Error {
+    constructor() {
+        super("email already registered.")
     }
 }

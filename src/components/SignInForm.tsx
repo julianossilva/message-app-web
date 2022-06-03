@@ -28,14 +28,21 @@ export default function SignInForm() {
     return (
         <Container>
             <h2>Sign In</h2>
-            {loginFailed ? (
-                <p className="error-message">
-                    username or password wrong. 
+            {loginFailed && (
+
+                <div className="error-message-container">
+                    <div className="error-messages">
+                        <div>
+                            username or password wrong.
+                        </div>
+                    </div>
                     <a onClick={() => setLoginFailed(false)}>
                         <FontAwesomeIcon icon={faCircleXmark} />
-                    </a></p>)
-                : (<></>)}
-            <form onSubmit={submit}> 
+                    </a>
+                </div>
+            )
+            }
+            <form onSubmit={submit}>
                 <label htmlFor="username">username:</label>
                 <input type="text" name="username" value={username} onChange={e => setUsername(e.target.value)} />
                 <label htmlFor="password">password:</label>
@@ -49,6 +56,7 @@ export default function SignInForm() {
 
 
 const Container = styled.div`
+    
     font-family: 'Courier New', Courier, monospace;
     font-size: 12pt;
     background-color: #211834;
@@ -63,10 +71,15 @@ const Container = styled.div`
     }
 
 
-    .error-message {
+    .error-message-container {
+        display: flex;
         color: #F3F1F9;
         background-color: rgb(209, 55, 55);
         padding: 5px;
+    }
+
+    .error-message-container .error-messages{
+        flex-grow: 1;
     }
 
     .error-message a {
