@@ -1,19 +1,19 @@
+import React from "react";
 import { Link, Navigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../contexts/auth-context";
 
-
 export default function Home() {
-    let { getUserData } = useAuth()
+    let { getUserData } = useAuth();
 
     function signOut() {
-        console.log("Log out")
+        console.log("Log out");
     }
 
-    let userData = getUserData()
+    let userData = getUserData();
 
     if (!userData) {
-        return <Navigate to="/signin" />
+        return <Navigate to="/signin" />;
     }
 
     return (
@@ -23,7 +23,7 @@ export default function Home() {
             <Link to="signin">Sign In</Link>
             <button onClick={signOut}>Sign Out</button>
         </Container>
-    )
+    );
 }
 
-const Container = styled.div``
+const Container = styled.div``;

@@ -1,7 +1,8 @@
-import styled from "styled-components"
-import SignInForm from "./SignInForm"
-import logo from '../assets/logo.png'
-import { Link } from "react-router-dom"
+import React from "react";
+import styled from "styled-components";
+import SignInForm from "./SignInForm";
+import logo from "../assets/logo.png";
+import { Link } from "react-router-dom";
 export default function SignInFormContainer() {
     return (
         <Container>
@@ -10,9 +11,9 @@ export default function SignInFormContainer() {
                     <img className="logo" src={logo} alt="message app logo" />
                 </Link>
             </div>
-            <SignInForm/>
+            <SignInForm />
         </Container>
-    )
+    );
 }
 
 const Container = styled.div`
@@ -32,5 +33,4 @@ const Container = styled.div`
         max-width: 50px;
         margin-bottom: 10px;
     }
-    
-`
+`;

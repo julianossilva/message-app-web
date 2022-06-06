@@ -1,7 +1,8 @@
-import styled from "styled-components"
-import logo from '../assets/logo.png'
-import { Link } from "react-router-dom"
-import SignUpForm from "./SignUpForm"
+import React from "react";
+import styled from "styled-components";
+import logo from "../assets/logo.png";
+import { Link } from "react-router-dom";
+import SignUpForm from "./SignUpForm";
 
 export default function SignUpFormContainer() {
     return (
@@ -11,9 +12,9 @@ export default function SignUpFormContainer() {
                     <img className="logo" src={logo} alt="message app logo" />
                 </Link>
             </div>
-            <SignUpForm/>
+            <SignUpForm />
         </Container>
-    )
+    );
 }
 
 const Container = styled.div`
@@ -33,5 +34,4 @@ const Container = styled.div`
         max-width: 50px;
         margin-bottom: 10px;
     }
-    
-`
+`;
